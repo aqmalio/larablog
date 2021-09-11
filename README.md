@@ -1,19 +1,20 @@
-## Backend
+# Laravel and Next.Js
 
+## Backend (Laravel)
 ```
 composer install
 ```
 
-Copy .env dan config database
+create .env and config database
 
-import db db.sql
+import db with file `db.sql`
 
 ```
 php artisan serve
 ```
 
-## Frontend
-
+## Frontend (Next.js)
+go to `frontend` folder
 ```
 yarn install
 ```
