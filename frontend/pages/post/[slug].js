@@ -2,27 +2,33 @@ import { server } from '../../server'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+// async function getDetail() {
+//     // Fetch data from external API
+//     const router = useRouter()
+//     const { slug } = router.query
+//     const res = await fetch(`${server}/api/get-post/${slug}`)
+//     const post = await res.json()
+//     console.log(slug)
+//     return post
+// }
 
-export async function getServerSideProps() {
-    // Fetch data from external API
-    const router = useRouter()
-    const { slug } = router.query
-    const res = await fetch(`${server}/api/get-post/${slug}`)
-    const post = await res.json()
+export const getServerSideProps = async (context) => {
+    const res = await fetch(
+        `${server}/api/get-post/${context.params.slug}`
+    );
+    const post = await res.json();
 
-    // Pass data to the page via props
     return {
-        props: { post }, paths: [
-            // String variant:
-            '/blog/first-post',
-            // Object variant:
-            { params: { slug: 'second-post' } },
-        ], fallback: true,
-    }
-}
+        props: {
+            post,
+        },
+    };
+};
 
 export default function Post({ post }) {
+    // console.log(post)
     return (
+        // <span></span>
         <div class="overflow-x-hidden bg-gray-100">
             <nav class="px-6 py-4 bg-white shadow">
                 <div class="container flex flex-col mx-auto md:flex-row md:items-center md:justify-between">
@@ -49,34 +55,33 @@ export default function Post({ post }) {
 
             <div class="px-6 py-8">
                 <div class="container flex justify-between mx-auto">
-                    <div class="w-full lg:w-8/12">
+                    <div class="w-full lg:w-8/12 mx-auto">
                         <div class="flex items-center justify-between">
-                            <h1 class="text-xl font-bold text-gray-700 md:text-2xl">Post</h1>
-                        </div>
-                        <div class="mt-6" key={post.id}>
-                            <div class="max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-light text-gray-600">
-                                        {Date(post.created_at).toString()}</span><a href="#"
-                                            class="px-2 py-1 font-bold text-gray-100 bg-gray-600 rounded hover:bg-gray-500">Laravel and Nextjs</a>
-                                </div>
-                                <div class="mt-2"><Link href={`post/${post.slug}`} class="text-2xl font-bold text-gray-700 hover:underline">{post.title}</Link>
-                                    <img class="rounded w-full" src={post.cover} />
-                                    <p class="mt-2 text-gray-600" dangerouslySetInnerHTML={{ __html: post.content.substr(0, 200) }}></p>
-                                </div>
-                                <div class="flex items-center justify-between mt-4"><Link href={`post/${post.slug}`}
-                                    class="text-blue-500 hover:underline">Read more</Link>
-                                    <div><a href="#" class="flex items-center"><img
-                                        src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
-                                        alt="avatar" class="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" />
-                                        <h1 class="font-bold text-gray-700 hover:underline">{post.author}</h1>
-                                    </a></div>
-                                </div>
+                            <h1 class="text-xl font-bold text-gray-700 md:text-2xl">{post.title}</h1>
+                            <div class="flex items-center justify-between mt-4">
+                                <div><a href="#" class="flex items-center"><img
+                                    src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
+                                    alt="avatar" class="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" />
+                                    <h1 class="font-bold text-gray-700 hover:underline">{post.author}</h1>
+                                </a></div>
                             </div>
                         </div>
-                    </div></div>
+                        <div class="mt-6" key={post.id}>
+                            <div class="mx-auto bg-white-200 rounded-lg">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-light text-gray-600">
+                                        {Date(post.created_at).toString().substr(3, 8)}</span><a href="#"
+                                            class="px-2 py-1 font-bold text-gray-100 bg-gray-600 rounded hover:bg-gray-500">Laravel and Nextjs</a>
+                                </div>
 
+                                <img class="mt-2 rounded w-full" src={post.cover} />
+                                <p class="mt-2 text-gray-600" dangerouslySetInnerHTML={{ __html: post.content.toString() }}></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div >
+        </div>
     )
 }

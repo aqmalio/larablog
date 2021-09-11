@@ -26,4 +26,11 @@ class WebController extends Controller
 
         return response()->json($allPost, 200);
     }
+
+    public function getDetailPost($slug)
+    {
+        $detail = Post::where('slug', $slug)->first();
+
+        return response()->json($detail, 200);
+    }
 }

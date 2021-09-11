@@ -53,8 +53,9 @@ export default function Home({ posts, popularPosts }) {
                                             {Date(post.created_at).toString().substr(4, 7)}</span><a href="#"
                                                 class="px-2 py-1 font-bold text-gray-100 bg-gray-600 rounded hover:bg-gray-500">Laravel and Nextjs</a>
                                     </div>
-                                    <div class="mt-2"><Link href={`post/${post.slug}`} class="text-2xl font-bold text-gray-700 hover:underline">{post.title}</Link>
-                                        <img class="rounded w-full" src={post.cover} />
+                                    <div class="mt-2">
+                                        <span class="text-2xl mb-2 font-bold text-gray-700 hover:underline"><Link href={`post/${post.slug}`}>{post.title}</Link></span>
+                                        <img class="rounded w-full mt-2" src={post.cover} />
                                         <p class="mt-2 text-gray-600" dangerouslySetInnerHTML={{ __html: post.content.substr(0, 200) }}></p>
                                     </div>
                                     <div class="flex items-center justify-between mt-4"><Link href={`post/${post.slug}`}
